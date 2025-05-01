@@ -247,12 +247,9 @@ end
 local function get_content(wrk, filename)
   local content = wrk.file_cache[filename]
   if content then return content end
-  local content, e = load_file(SCRIPTDIR..filename, 'r')
+  local content, e = load_file("./"..filename, 'r')
   if e then
-    content, e = load_file("./"..filename, 'r')
-    if e then
-      error('can not find '..filename..' '..SCRIPTDIR..' or ./')
-    end
+    error('can not find ./'..filename)
   end
   wrk.file_cache[filename] = content
   return content
