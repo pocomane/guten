@@ -99,6 +99,64 @@ test([[@{option.foo}]], [[bar]], [[--foo=bar]])
 
 -- --------------------------------------------------------------------------------
 
+test([[@{{transform(".*",mdtohtml)}}
+||
+|-|
+|a|b|
+|c|d|
+
+]], [[
+<div style="text-align:left"><table>
+<tr><td>a</td><td>b</td></tr>
+<tr><td>c</td><td>d</td><td></td></tr>
+</table></div>
+
+]])
+
+test([[@{{transform(".*",mdtohtml)}}
+||
+|:-|
+|a|b|
+|c|d|
+
+]], [[
+<div style="text-align:left"><table>
+<tr><td>a</td><td>b</td></tr>
+<tr><td>c</td><td>d</td><td></td></tr>
+</table></div>
+
+]])
+
+test([[@{{transform(".*",mdtohtml)}}
+||
+|-:|
+|a|b|
+|c|d|
+
+]], [[
+<div style="text-align:right"><table>
+<tr><td>a</td><td>b</td></tr>
+<tr><td>c</td><td>d</td><td></td></tr>
+</table></div>
+
+]])
+
+test([[@{{transform(".*",mdtohtml)}}
+||
+|:-:|
+|a|b|
+|c|d|
+
+]], [[
+<div style="text-align:center"><table>
+<tr><td>a</td><td>b</td></tr>
+<tr><td>c</td><td>d</td><td></td></tr>
+</table></div>
+
+]])
+
+-- --------------------------------------------------------------------------------
+
 log("done.")
 log(tostring(success).." tests passed.")
 log(tostring(fail).." tests failed.")

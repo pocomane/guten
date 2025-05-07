@@ -150,13 +150,16 @@ function demarkdown_block(s)
 	  end)
 
 	  -- table
-	  s = first_or_skip_sub(s, '^|[^\n]*|[^\n]*\n|[^\n]*%-[^\n]*\n(.*)', function(a)
+	  s = first_or_skip_sub(s, '^|[^\n]*|[^\n]*\n|[^\n:-]*(:?)%-(:?)[^\n]*\n(.*)', function(l, r, a)
+       local align = "left"
+       if l ~= '' and r ~= '' then align = "center" end
+       if l == '' and r ~= '' then align = "right" end
 		   a = a:gsub('\n|', '\n')
 		   a = a:gsub('|[ ]*\n', '\n')
 		   a = a:gsub('^|', '<tr><td>')
 		   a = a:gsub('|', '</td><td>')
 		   a = a:gsub('\n', '</td></tr>\n<tr><td>')
-		   a = '<table'..get_class()..'>\n'..a..'</td></tr>\n</table>'
+		   a = '<div style="text-align:'..align..'"><table'..get_class()..'>\n'..a..'</td></tr>\n</table></div>'
 		   return a
 	  end)
 
