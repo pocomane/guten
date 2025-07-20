@@ -8,9 +8,6 @@
 -- NOTE: this is almost iddentical to the luasnip version.
 -- THE IMPROVEMENT is the handling of the Transformations
 
--- TODO : port the Trasformation to luasnip ???
--- TODO : rename "clear" utility function ???
-
 local setmetatable, load = setmetatable, load
 local fmt, tostring = string.format, tostring
 local error = error
@@ -49,10 +46,12 @@ local function templua( template, transform ) --> ( sandbox ) --> expstr, err
    end
 
    -- Compile the template expander in a empty environment
-   script = 'local _ENV, out = _ENV(); ' .. script
    local env, outfunc -- set into the returned function
-   local function envget() return env, outfunc end
-   local generate, err = load( script, 'templua_script', 't', envget)
+   local generate, err = load(
+     'local _ENV, out = _ENV(); ' ..  script,
+     'templua_script', 't',
+     function() return env, outfunc end
+   )
    if err ~= nil then return report_error( err ) end
 
    -- Return a function that runs the expander with a custom environment
@@ -340,6 +339,7 @@ local function expand_content(wrk, src, env, apply_transform)
     for k, v in pairs(wrk.env) do
       opt[k] = v
     end
+-- TODO : rename "clear" utility function ???
     env = {
       pairs = pairs, ipairs = ipairs,
       log = log,
