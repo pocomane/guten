@@ -322,8 +322,9 @@ end
 local function expand_content(wrk, src, env, apply_transform)
   if env == nil then
     local pipeline = {}
-    local function transform( a, b )
-      pipeline[1+#pipeline] = {a,b}
+    local function transform( f )
+      if type(f) ~= 'function' then error('argument must be a function', 1) end
+      pipeline[1+#pipeline] = f
     end
     local function readcommand(cmd)
       local f, e = io.popen(cmd, 'r')
@@ -363,8 +364,7 @@ local function expand_content(wrk, src, env, apply_transform)
           -- TODO : remove ? it can be emulated with subst function, and actually
           -- pure prepend/postpend without pre-matching is rare (and can be
           -- done witout tranformation)
-          local t = pipeline[k]
-          str = str:gsub( t[1], t[2] )
+          str = pipeline[k](str)
         --end
       end
       return str

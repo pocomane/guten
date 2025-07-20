@@ -99,7 +99,7 @@ test([[@{option.foo}]], [[bar]], [[--foo=bar]])
 
 -- --------------------------------------------------------------------------------
 
-test([[@{{transform(".*",mdtohtml)}}
+test([[@{{transform(mdtohtml)}}
 ||
 |-|
 |a|b|
@@ -113,7 +113,7 @@ test([[@{{transform(".*",mdtohtml)}}
 
 ]])
 
-test([[@{{transform(".*",mdtohtml)}}
+test([[@{{transform(mdtohtml)}}
 ||
 |:-|
 |a|b|
@@ -127,7 +127,7 @@ test([[@{{transform(".*",mdtohtml)}}
 
 ]])
 
-test([[@{{transform(".*",mdtohtml)}}
+test([[@{{transform(mdtohtml)}}
 ||
 |-:|
 |a|b|
@@ -141,7 +141,7 @@ test([[@{{transform(".*",mdtohtml)}}
 
 ]])
 
-test([[@{{transform(".*",mdtohtml)}}
+test([[@{{transform(mdtohtml)}}
 ||
 |:-:|
 |a|b|
