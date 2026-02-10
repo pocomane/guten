@@ -94,9 +94,9 @@ function demarkdown_block(s)
 	local done = false
 	local function first_or_skip_sub(str, pat, sub)
 	  if done then return str end
-	  local result = str:gsub(pat, sub)
-	  if not result then result = str end
-	  if result ~= str then done = true end
+	  local result, found = str:gsub(pat, sub)
+	  if found == 0 then result = str end
+	  if found ~= 0 then done = true end
 	  return result
 	end
 
@@ -116,6 +116,12 @@ function demarkdown_block(s)
 		  end
 		  return '<a href="'..b..'">'..a..'</a>'
 	  end)
+
+	  -- footnote reference
+	  s = first_or_skip_sub(s, '^%[%^([^]]*)%]: (.*)$', '<div id="footnote-%1" class="footnote">%1: %2</div>')
+
+	  -- footnote link
+	  s = s:gsub('%[%^([^]]*)%]', '<sup><a href="#footnote-%1">%1</a></sup>')
 
 	  -- class extension
 	  s = first_or_skip_sub(s, '^%[([^]]*)%]%(([^)]*)%)[^\n]*\n?(.*)', function(a, b, c)
