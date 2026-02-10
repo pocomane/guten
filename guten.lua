@@ -118,7 +118,11 @@ function demarkdown_block(s)
 	  end)
 
 	  -- footnote reference
-	  s = first_or_skip_sub(s, '^%[%^([^]]*)%]: (.*)$', '<div id="footnote-%1" class="footnote">%1: %2</div>')
+	  s = first_or_skip_sub(s, '^%[%^[^]]*%]: .*$', function(a)
+	    return '<div class="footnote">\n'
+        .. s:gsub('%[%^([^]]*)%]: ([^\n]*)', '<div id="footnote-%1">%1: %2</div>')
+        .. '\n</div>'
+    end)
 
 	  -- footnote link
 	  s = s:gsub('%[%^([^]]*)%]', '<sup><a href="#footnote-%1">%1</a></sup>')
